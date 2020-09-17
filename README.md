@@ -1,14 +1,7 @@
-[![Join the chat at https://gitter.im/formio/formio](https://badges.gitter.im/formio/formio.svg)](https://gitter.im/formio/formio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![StackOverflow](https://www.codewake.com/badges/codewake2.svg)](http://stackoverflow.com/tags/formio)
-
-A combined form and API platform for Serverless applications
+Deploying Form.io to Heroku
 ===============================
-Form.io is a revolutionary combined Form and API platform for Serverless applications. This repository serves as the core Form and API engine for https://form.io. This system allows you to build "serverless" data management applications using a simple drag-and-drop form builder interface. These forms can then easily be embedded within your Angular.js and React applications using the
+This library is an adaptation of formio/formio to allow it to be deployed to Heroku. Form.io is a revolutionary combined Form and API platform for Serverless applications. This repository serves as the core Form and API engine for https://form.io. This system allows you to build "serverless" data management applications using a simple drag-and-drop form builder interface. These forms can then easily be embedded within your Angular.js and React applications using the
 ```<formio>``` HTML element.
-
-Form.io is Hiring!
--------------------
-If you like what you see, and would like to come and work for a cutting edge, Open Source core company, then please apply online @ [https://form-talent.freshteam.com/jobs](https://form-talent.freshteam.com/jobs)!
 
 Walkthrough video and tutorial
 -------------------
@@ -91,40 +84,19 @@ To start server with auto restart capability for development simply run this com
 npm run start:dev
 ```
 
-Deploy to Hosted Form.io
+Deploying to Heroku
 --------------------
-If you wish to deploy all of your forms and resources into the Form.io Hosted platform @ https://form.io, you can do this by using the Form.io CLI command line tool.
+The changes here are reflected in this comment on an issue on the original repository: https://github.com/formio/formio/issues/961#issuecomment-694082340
 
-```
-npm install -g formio-cli
-```
+Namely:
+1. Fork this library if you would like your own variant.
+2. Don't use the docker container for the stack/framework. If you've set that up already, run `heroku stack:set heroku-18` to revert back to the heroku stack.
+3. You will be using the regular heroku stack instead, so add the nodejs buildpack.
+4. Heroku provides in the port it's set up for your app in the `PORT` env variable. So in `server.js`, add the following line: `config.port = process.env.PORT || config.port;` after the line where we pull in `config` (which should look like `const config = options.config || require('config');`).
+5. Set up your mongo DB somewhere and get the URL. You'll need it for the next step.
+6. Set the `NODE_CONFIG` env var to: `{"mongo": "<MONGOURL>","host":"<APPNAME>.herokuapp.com","protocol":"https","domain":"https://<APPNAME>.herokuapp.com"}`, replacing `<MONGOURL>` with the mongo url you got from step 4 and `<APPNAME>` with the name of your app.
+7. Make sure to set the `ROOT_EMAIL` and `ROOT_PASSWORD` env variables to set up the initial admin account on first start up. Set the `OVERRIDE_ROOT_USER_CREATION` to `true` if you would like to not keep generating new admin accounts with each subsequent deployment.
 
-Once you have this tool installed, you will need to follow these steps.
- - Create a new project within Form.io
- - Create an API Key within this project by going to the **Project Settings | Stage Settings | API Keys**
- - Next, you can execute the following command to deploy your local project into Hosted Form.io.
-
-```
-formio deploy http://localhost:3001 https://{PROJECTNAME}.form.io --dst-key={APIKEY}
-```
-
-You will need to make sure you replace ```{PROJECTNAME}``` and ```{APIKEY}``` with your new Hosted Form.io project name (found in the API url), as well as the API key that was created in the second step above.
-
-This will then ask you to log into the local Form.io server (which can be provided within the Admin resource), and then after it authenticates, it will export the project and deploy that project to the Form.io hosted form.
-
-License Change (March 8th, 2020)
+License
 --------------------
-This library is now licensed under the OSL-v3 license, which is a copy-left OSI approved license. Please read the license @ https://opensource.org/licenses/OSL-3.0 for more information. Our goal for the change to OSLv3 from BSD is to ensure that appropriate Attribution is provided when creating proprietary products that leverage or extend this library.
-
-Help
---------------------
-We will be updating the help guides found @ https://help.form.io as questions arise and also to help you get started with Form.io.
-
-Thanks for using Form.io!
-
-The Form.io Team.
-
-Security
-=========
-If you find and/or think you have found a Security issue, please quietly disclose it to security@form.io, and give us
-sufficient time to patch the issue before disclosing it publicly.
+This library is extending the original library here: https://github.com/formio/formio, under the OSL-v3 license, which is a copy-left OSI approved license. Please read the license @ https://opensource.org/licenses/OSL-3.0 for more information. Their goal for the change to OSLv3 from BSD is to ensure that appropriate Attribution is provided when creating proprietary products that leverage or extend this library.
