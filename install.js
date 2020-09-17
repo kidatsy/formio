@@ -401,18 +401,18 @@ module.exports = function(formio, items, done) {
      * @param done
      */
     createRootUser: function(done) {
-      if (process.env.OVERRIDE_ROOT_USER_CREATION) {
-        return done();
-      }
+      // if (process.env.OVERRIDE_ROOT_USER_CREATION) {
+      //   return done();
+      // }
       if (process.env.ROOT_EMAIL) {
         prompt.override = {
           email: process.env.ROOT_EMAIL,
           password: process.env.ROOT_PASSWORD
         };
       }
-      // if (!items.user) {
-      //   return done();
-      // }
+      if (!items.user) {
+        return done();
+      }
       util.log('Creating root user account...'.green);
       prompt.get([
         {
