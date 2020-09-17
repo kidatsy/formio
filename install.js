@@ -401,6 +401,9 @@ module.exports = function(formio, items, done) {
      * @param done
      */
     createRootUser: function(done) {
+      if (process.env.OVERRIDE_ROOT_USER_CREATION) {
+        return done();
+      }
       if (process.env.ROOT_EMAIL) {
         prompt.override = {
           email: process.env.ROOT_EMAIL,

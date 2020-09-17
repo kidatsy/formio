@@ -45,6 +45,9 @@ module.exports = function(options) {
   // Use the given config.
   const config = options.config || require('config');
 
+  // Setting the right config if we're getting process.env.PORT from Heroku
+  config.port = process.env.PORT || config.port;
+
   // Configure nunjucks.
   nunjucks.configure('client', {
     autoescape: true,
