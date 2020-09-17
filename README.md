@@ -89,13 +89,12 @@ Deploying to Heroku
 The changes here are reflected in this comment on an issue on the original repository: https://github.com/formio/formio/issues/961#issuecomment-694082340
 
 Namely:
-1. Fork this library if you would like your own variant.
+1. Fork this library if you would like your own variant. It should work out of the box though.
 2. Don't use the docker container for the stack/framework. If you've set that up already, run `heroku stack:set heroku-18` to revert back to the heroku stack.
-3. You will be using the regular heroku stack instead, so add the nodejs buildpack.
-4. Heroku provides in the port it's set up for your app in the `PORT` env variable. So in `server.js`, add the following line: `config.port = process.env.PORT || config.port;` after the line where we pull in `config` (which should look like `const config = options.config || require('config');`).
-5. Set up your mongo DB somewhere and get the URL. You'll need it for the next step.
-6. Set the `NODE_CONFIG` env var to: `{"mongo": "<MONGOURL>","host":"<APPNAME>.herokuapp.com","protocol":"https","domain":"https://<APPNAME>.herokuapp.com"}`, replacing `<MONGOURL>` with the mongo url you got from step 4 and `<APPNAME>` with the name of your app.
-7. Make sure to set the `ROOT_EMAIL` and `ROOT_PASSWORD` env variables to set up the initial admin account on first start up. Set the `OVERRIDE_ROOT_USER_CREATION` to `true` if you would like to not keep generating new admin accounts with each subsequent deployment.
+3. You will be using the regular heroku stack instead, so add the `nodejs` buildpack in the Heroku settings.
+4. Set up your mongo DB somewhere - we would recommend using MongoDB Atlas, as it has free sandbox pricing, rather than any Heroku add-ons. You'll need the URL for the resulting DB for the next step.
+5. Set the `NODE_CONFIG` env var to: `{"mongo": "<MONGOURL>","host":"<APPNAME>.herokuapp.com","protocol":"https","domain":"https://<APPNAME>.herokuapp.com"}`, replacing `<MONGOURL>` with the mongo url you got from step 4 and `<APPNAME>` with the name of your app.
+6. Make sure to set the `ROOT_EMAIL` and `ROOT_PASSWORD` env variables to set up the initial admin account on first start up. Set the `OVERRIDE_ROOT_USER_CREATION` to `true` if you would like to not keep generating new admin accounts with each subsequent deployment.
 
 License
 --------------------
