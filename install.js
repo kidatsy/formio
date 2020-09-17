@@ -410,9 +410,9 @@ module.exports = function(formio, items, done) {
           password: process.env.ROOT_PASSWORD
         };
       }
-      if (!items.user) {
-        return done();
-      }
+      // if (!items.user) {
+      //   return done();
+      // }
       util.log('Creating root user account...'.green);
       prompt.get([
         {
